@@ -5,14 +5,13 @@ using System.Net.Http.Handlers;
 
 Console.WriteLine("Hello, World!");
 
-long a = 0;
 
 string url = "https://nightly.link/Grasscutters/Grasscutter/workflows/build/development/Grasscutter.zip";
 string filepath = @"D:\Grasscutter.zip";
-DownLoad downLoad = new DownLoad();
+DownLoad.DownLoad downLoad = new DownLoad.DownLoad();
 
 await downLoad.DownloadFile(url, filepath, (a) =>
 {
-    Console.WriteLine("已经获得的字节数量："+a);
+    Console.WriteLine("已经获得的字节数量："+a.NowLength+"     下载进度为："+a.NowProcess);
 });
 

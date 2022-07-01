@@ -21,12 +21,15 @@ namespace DownLoad
         /// <param name="url">下载host</param>
         /// <param name="filepath">下载文件的保存地址</param>
         /// <returns></returns>
-        public async Task DownloadFile(string url, string filepath, Action<long> action)
+        public async Task DownloadFile(string url, string filepath, Action<DownArgs> action)
         {
             var progressMessageHandler = new ProgressMessageHandler(new HttpClientHandler());
             progressMessageHandler.HttpReceiveProgress += (j, m) =>
             {
-                var b = m.BytesTransferred;
+                var b = new DownArgs() { NowProcess=m.ProgressPercentage
+                    ,
+                    NowLength = m.BytesTransferred
+                };
                 action.Invoke(b);
             };
             using (var client = new HttpClient(progressMessageHandler))
@@ -39,6 +42,12 @@ namespace DownLoad
             }
         }
 
+
     }
 
+    public class DownArgs
+    {
+        public long NowProcess = 0;
+        public long NowLength = 0;
+    }
 }
